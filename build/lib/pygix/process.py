@@ -153,7 +153,7 @@ class Processor(object):
         t_start = time.time()
 
         for i, f in enumerate(file_list):
-            print('processing file: {}/{}\n\t{}'.format(i + 1, n_files, f))
+            print 'processing file: {}/{}\n\t{}'.format(i + 1, n_files, f)
 
             # THIS WORKS BUT NEEDS TESTING
             # if self.out_fname is not None:
@@ -166,7 +166,7 @@ class Processor(object):
         t_end = time.time() - t_start
         msg = '{} files processed in {} seconds\n'
         msg += '{} seconds per file'
-        print(msg.format(n_files, t_end, t_end/n_files))
+        print msg.format(n_files, t_end, t_end/n_files)
 
         y_scale = np.arange(0, n_files)
         out = (out_array, x_scale, y_scale)
@@ -185,7 +185,7 @@ class Processor(object):
         t_start = time.time()
 
         for i, f in enumerate(file_list):
-            print('processing file: {}/{}\n\t{}'.format(i + 1, n_files, f))
+            print 'processing file: {}/{}\n\t{}'.format(i + 1, n_files, f)
 
             # THIS WORKS BUT NEEDS TESTING
             # if self.out_fname is not None:
@@ -197,14 +197,14 @@ class Processor(object):
         t_end = time.time() - t_start
         msg = '{} files processed in {} seconds\n'
         msg += '{} seconds per file'
-        print(msg.format(n_files, t_end, t_end/n_files))
+        print msg.format(n_files, t_end, t_end/n_files)
 
         return True
 
     def process(self):
         """
-        Main batch processor. Will get file list the iterate over
-        each performing reduction. Will save the data if outfiles
+        Main batch processor. Will get file list the iterate over 
+        each performing reduction. Will save the data if outfiles 
         have been specified. Will plot all if live_view is True,
         requests user input if interactive is True.
         """
@@ -369,7 +369,7 @@ def init_pygix(calibration_dict):
 
 if __name__ == '__main__':
     if len(sys.argv) is not 2:
-        print('usage: process.py recipe.yaml')
+        print 'usage: process.py recipe.yaml'
         sys.exit(0)
     else:
         rp = Processor(sys.argv[1])

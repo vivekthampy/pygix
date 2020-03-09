@@ -114,13 +114,13 @@ TTH_DEG = TTH = Enum(REPR="2theta_deg",
 
 TTH_RAD = Enum(REPR="2theta_rad",
                IPL_UNIT="2theta_f_rad",
-               OPL_UNIT="alpha_f_rad",
+               OPL_UNIT="alpha_f_rad",  
                center="gia_center_array",
                corner="gia_corner_array",
                delta="gia_delta_array",
                abs_center="absa_center_array",
                abs_corner="absa_corner_array",
-               abs_delta="absa_delta_array",
+               abs_delta="absa_delta_array",     
                scale=1.0)
 
 Q_NM = Q = Enum(REPR="q_nm^-1",
@@ -175,7 +175,7 @@ def ip_unit(obj):
         logger.error("Unable to recognize this type unit '%s' of type %s."
                      " Valid units are 2th_deg, 2th_rad, q_nm^-1 and q_A^-1" % \
                      (obj, type(obj)))
-    return ipl_giUnit
+    return ipl_giUnit  
 
 def op_unit(obj):
     opl_giUnit = None
@@ -190,7 +190,7 @@ def op_unit(obj):
         logger.error("Unable to recognize this type unit '%s' of type %s."
                      " Valid units are 2th_deg, 2th_rad, q_nm^-1 and q_A^-1" % \
                      (obj, type(obj)))
-    return opl_giUnit
+    return opl_giUnit  
 
 
 # ABS_TTH_DEG = ABS_TTH = Enum(REPR="2th_deg",
@@ -221,7 +221,7 @@ def op_unit(obj):
 
 def absolute_unit(obj):
     abs_giUnit = None
-    print(type(obj))
+    print type(obj)
     if type(obj) in types.StringTypes:
         for one_unit in ABS_UNITS:
             if one_unit.REPR == obj:
@@ -233,5 +233,6 @@ def absolute_unit(obj):
         logger.error("Unable to recognize this type unit '%s' of type %s. "
                      "Valid units are 2th_deg, 2th_rad, q_nm^-1, q_A^-1 and r_mm"\
                      % (obj, type(obj)))
-    print(abs_giUnit)
-    return abs_giUnit
+    print abs_giUnit
+    return abs_giUnit        
+
