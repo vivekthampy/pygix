@@ -136,7 +136,7 @@ class Transform(GrazingGeometry):
     """
     This class contains methods for performing transformation and
     integration of images collected in the grazing-incidence geometry.
- 
+
     The operations are applicable to the related techniques of:
     - grazing-incidence X-ray diffraction (GIXRD, GID)
     - grazing-incidence wide-angle X-ray scattering (GIWAXS)
@@ -144,43 +144,43 @@ class Transform(GrazingGeometry):
     These techniques will collectively be referred to as grazing-
     incidence X-ray scattering (GIXS).
 
-    The class is based on pyFAI's AzimuthalIntegrator class. 
-    GrazingTransform inherets from GrazingGeometry, which itself 
+    The class is based on pyFAI's AzimuthalIntegrator class.
+    GrazingTransform inherets from GrazingGeometry, which itself
     inherets from pyFAI's Geometry class. All geometry calculation
     are done in the GrazingGeometry or pyFAI Geometry class.
 
-    The development of these classes was necessary to introduce the 
-    reciprocal space transformation equations (see grazingGeometry) 
-    and to handle additional variables that could not be accounted for 
+    The development of these classes was necessary to introduce the
+    reciprocal space transformation equations (see grazingGeometry)
+    and to handle additional variables that could not be accounted for
     in pyFAI:
-      - grazingGeometry : the orientaition of the surface plane 
-        (defines orientaition and sign of q vectors relative to input 
+      - grazingGeometry : the orientaition of the surface plane
+        (defines orientaition and sign of q vectors relative to input
          image)
       - alpha_i :  the incident angle
-      - misalign : an angle defining a misaligned surface plane (i.e. 
+      - misalign : an angle defining a misaligned surface plane (i.e.
         not perfectly horizontal/vertical)
 
     These variables are class attributes to GrazingTransform. This is
-    beneficial if the geometry and incident angle are constant (or at 
+    beneficial if the geometry and incident angle are constant (or at
     least there is a commonly used incident angle) as look-up tables
     (LUTs) describing transformation and integration can be stored,
     speeding up processing time. When the geometry, incident angle or
-    misalignment angle change either the class attributes can be 
+    misalignment angle change either the class attributes can be
     changed using the relevant getters or their values can be passed
-    directly to the transformation/integration functions (therefore 
+    directly to the transformation/integration functions (therefore
     not altering the class attributes).
 
-    The grazing-incidence geometry ("giGeometry") can take one of 4 
+    The grazing-incidence geometry ("giGeometry") can take one of 4
     int values (1, 2, 3 or 4) is defined as follows:
         1: Sample plane horizontal; bottom-top = +ve Qz
         2: Sample plane vertical;   left-right = +ve Qz
         3: Sample plane horizontal; bottom-top = -ve Qz
         4: Sample plane vertical;   left-right = -ve Qz
 
-    N.B. that it is not possible to rotate images before-hand as this 
+    N.B. that it is not possible to rotate images before-hand as this
     will nullify the poni file (as well as darks, flats, splines etc).
     For more details see the main documentation.
-    
+
     The main methods are:
         >>> I, qxy, qz = pg.transform_reciprocal(data)
                 Transform raw image to angular or q coordinates
@@ -188,7 +188,7 @@ class Transform(GrazingGeometry):
                 Transform image to cake plot (chi vs q or 2theta)
         >>> I, q = gi.integrate_1d(data, npt)
                 1d integration
-    
+
     There are four wrappers for the 1d integration:
         >>> profile_sector
         >>> profile_chi
@@ -198,10 +198,10 @@ class Transform(GrazingGeometry):
     The error can be calculated and returned for each method if either
     a variance ndarray or error model is provided.
 
-    For each method the resulting intensty data is always taken 
-    directly from the source raw image (e.g. rather than performing 2d 
-    integration on GIXS reciprocal space maps). This prevents mutliple 
-    re-sampling, which can lead to the smearing of reflections and 
+    For each method the resulting intensty data is always taken
+    directly from the source raw image (e.g. rather than performing 2d
+    integration on GIXS reciprocal space maps). This prevents mutliple
+    re-sampling, which can lead to the smearing of reflections and
     inaccurate results.
     """
 
@@ -216,39 +216,39 @@ class Transform(GrazingGeometry):
         Parameters
         ----------
         dist : float
-            Distance from sample to detector plane (orthogonal 
+            Distance from sample to detector plane (orthogonal
             distance, not along the beam), in meters.
         poni1 : float
-            Coordinate of the point-of-normal-incidence along the 
+            Coordinate of the point-of-normal-incidence along the
             detector's first dimension, in meters.
         poni2 : float
-            Coordinate of the point-of-normal-incidence along the 
+            Coordinate of the point-of-normal-incidence along the
             detector's second dimension, in meters.
         rot1 : float
-            First rotation from sample reference to detector 
+            First rotation from sample reference to detector
             reference, in radians.
         rot2 : float
-            Second rotation from sample reference to detector 
+            Second rotation from sample reference to detector
             reference, in radians.
         rot3 : float
-            Third rotation from sample reference to detector 
+            Third rotation from sample reference to detector
             reference, in radians.
         pixel1 : float
-            Pixel size of the fist dimension of the detector, in 
+            Pixel size of the fist dimension of the detector, in
             meters.
         pixel2 : float
-            Pixel size of the second dimension of the detector, in 
+            Pixel size of the second dimension of the detector, in
             meters.
         splinefile : str
-            File containing the geometric distortion of the detector. 
+            File containing the geometric distortion of the detector.
             Overrides the pixel size.
         detector : str or pyFAI.detector
             Name of the detector or Detector instance.
         wavelength : float
             X-ray wavelength in meters.
         sample_orientation : int
-            Orientation of surface plane relative to image axes. Can 
-            be 0, 1, 2 or 3. 
+            Orientation of surface plane relative to image axes. Can
+            be 0, 1, 2 or 3.
         incident_angle : float
             Incident angle (degrees).
         tilt_angle : float
@@ -297,7 +297,7 @@ class Transform(GrazingGeometry):
 
     def reset(self):
         """
-        Reset GrazingTransform class. 
+        Reset GrazingTransform class.
         """
         GrazingGeometry.reset(self)
 
@@ -340,7 +340,7 @@ class Transform(GrazingGeometry):
         delta_dummy : float
             Precision of dummy pixels.
         mode : str
-            Mode can be "normal" or "np" (inverted) or "where" 
+            Mode can be "normal" or "np" (inverted) or "where"
             applied to the mask.
 
         Returns
@@ -458,15 +458,15 @@ class Transform(GrazingGeometry):
             pos = self.giarray_from_unit(shape, process, "corner", unit)
         else:
             pos1, pos0 = self.giarray_from_unit(shape, process, "center", unit)
-            if split = "no": 
+            if split = "no":
                 dpos1, dpos0 = (None, None)
             else:
-                dpos1, dpos0 = self.giarray_from_unit(shape, process, 
+                dpos1, dpos0 = self.giarray_from_unit(shape, process,
                                                       "delta", unit)
             if (pos1_range is None) and (not int2d):
-                
-                
-                
+
+
+
         pos1, pos0   = self.giarray_from_unit(shape, process, "center", unit)
         dpos1, dpos0 = self.giarray_from_unit(shape, process, "delta", unit)
 
@@ -489,7 +489,7 @@ class Transform(GrazingGeometry):
 
         pos0Range = (pos0_min, pos0_maxin * EPS32)
         pos1Range = (pos1_min, pos1_maxin * EPS32)
-        
+
         if mask is None:
             mask_checksum = None
         else:
@@ -519,23 +519,23 @@ class Transform(GrazingGeometry):
 
     def giarray_from_unit(self, shape, process, typ, unit):
         """
-        Generate an array of coordinates in different dimensions 
+        Generate an array of coordinates in different dimensions
         (tthf_alpf, qxy_qz or qy_qz) for GIXS transformation.
 
         process = ["angular", "reciprocal", "polar",
                    "sector", "chi", "ipbox", "opbox"]
-       
+
            | methods:              |   process name:
         ----------------------------------------------
         2D | transform_angular     |  angular
            | transform_reciprocal  |  reciprocal
            | transform_polar       |  polar
-        ----------------------------------------------- 
+        -----------------------------------------------
         1D | profile_sector        |  sector
            | profile_chi           |  chi
            | profile_ip_box        |  ipbox
            | profile_op_box        |  opbox
-       
+
         """
         if not typ in ("center", "corner", "delta"):
             raise RuntimeError(("Unkown type of array %s," % typ))
@@ -568,7 +568,7 @@ class Transform(GrazingGeometry):
                           polarization_factor=None, dark=None, flat=None,
                           method='splitpix', unit='deg',
                           safe=True, normalization_factor=None, all=False):
-        """ 
+        """
         Wrapper for transform_image to project input array into
         angular coordinates I(2th_f,a_f).
         """
@@ -606,7 +606,7 @@ class Transform(GrazingGeometry):
                              method='splitpix', unit='nm',
                              safe=True, normalization_factor=None, all=False):
 
-        """         
+        """
         Wrapper for transform_image to project input array into
         reciprocal space coordinates I(q_xy,q_z).
         """
@@ -643,7 +643,7 @@ class Transform(GrazingGeometry):
                         polarization_factor=None, dark=None, flat=None,
                         method='splitpix', unit='nm',
                         safe=True, normalization_factor=None, all=False):
-        """ 
+        """
         Wrapper for transform_image to project input array into
         polar coordinates I(q,chi).
         """
@@ -677,8 +677,8 @@ class Transform(GrazingGeometry):
                         method='splitpix', unit=grazing_units.Q,
                         safe=True, normalization_factor=None, all=False):
         """
-        Project a raw GIXS pattern into reciprocal space qxy(nm^-1) vs 
-        qz(nm^-1) by default. Based on pyFAI integrate 2d. Multi 
+        Project a raw GIXS pattern into reciprocal space qxy(nm^-1) vs
+        qz(nm^-1) by default. Based on pyFAI integrate 2d. Multi
         algorithm implementation (tries to be bullet proof).
 
         Parameters
@@ -690,22 +690,22 @@ class Transform(GrazingGeometry):
         correctSolidAngle : bool
             Correct for solid angle of each pixel if True.
         variance : ndarray
-            Array containing the variance of the data. If not available, 
+            Array containing the variance of the data. If not available,
             no error propagation is done.
         error_model : str
-            When variance is unknown, an error model can be given: 
-            "poisson" (variance = I), "azimuthal" (variance = 
+            When variance is unknown, an error model can be given:
+            "poisson" (variance = I), "azimuthal" (variance =
             (I-<I>)^2).
         x_range : (float, float), optional
-            The lower and upper unit of the in-plane unit. If not 
-            provided, range is simply (data.min(), data.max()). Values 
+            The lower and upper unit of the in-plane unit. If not
+            provided, range is simply (data.min(), data.max()). Values
             outside the range are ignored.
         y_range : (float, float), optional
-            The lower and upper range of the out-of-plane unit. If not 
-            provided, range is simply (data.min(), data.max()). Values 
+            The lower and upper range of the out-of-plane unit. If not
+            provided, range is simply (data.min(), data.max()). Values
             outside the range are ignored.
         mask : ndarray
-            Masked pixel array (same size as image) with 1 for masked 
+            Masked pixel array (same size as image) with 1 for masked
             pixels and 0 for valid pixels.
         dummy : float
             Value for dead/masked pixels.
@@ -721,11 +721,11 @@ class Transform(GrazingGeometry):
             Integration method. Can be "np", "cython", "bbox",
             "splitpix", "lut" or "lut_ocl" (if you want to go on GPU).
         unit : str
-            Grazing-incidence units. Can be "2th_af_deg", "2th_af_rad", 
-            "qxy_qz_nm^-1", "qxy_qz_A^-1", "qxy_qz_nm^-1" or 
+            Grazing-incidence units. Can be "2th_af_deg", "2th_af_rad",
+            "qxy_qz_nm^-1", "qxy_qz_A^-1", "qxy_qz_nm^-1" or
             "qxy_qz_A^-1". For GISAXS qy vs qz is typically preferred;
             for GIWAXS, qxy vs qz.
-            (TTH_AF_DEG, TTH_AF_RAD, QY_QZ_NM, QY_QZ_A, QXY_QZ_NM, 
+            (TTH_AF_DEG, TTH_AF_RAD, QY_QZ_NM, QY_QZ_A, QXY_QZ_NM,
             QXY_QZ_A).
         safe : bool
             Do some extra check to ensure LUT is still valid. False is
@@ -739,9 +739,9 @@ class Transform(GrazingGeometry):
             Regrouped intensity, in-plane bins, out-of-plane bins.
 
         or
-        
+
         I, bins_x, bins_y, sigma : 4-tuple of ndarrays
-            Regrouped intensity, in-plane bins, out-of-plane bins and 
+            Regrouped intensity, in-plane bins, out-of-plane bins and
             error.
         """
         method = method.lower()
@@ -1118,7 +1118,7 @@ class Transform(GrazingGeometry):
                     self.make_transformedmask(process, shape, npt, bins_x, bins_y)
                 if dummy is None:
                     dummy = 0
-            
+
                 I[self._transformedmask == 0] = dummy
                 if sigma is not None:
                     sigma[self._transformedmask == 0] = dummy
@@ -1359,8 +1359,8 @@ class Transform(GrazingGeometry):
                      method="bbox", unit=grazing_units.Q,
                      safe=True, normalization_factor=None):
         """
-        Calculate azimuthally integrated 1d curve in q(nm^-1) by 
-        efault. Based on pyFAI integrate1d. Multi algorithm 
+        Calculate azimuthally integrated 1d curve in q(nm^-1) by
+        efault. Based on pyFAI integrate1d. Multi algorithm
         implementation (tries to be bullet proof).
 
         Args:
@@ -1919,10 +1919,12 @@ class Transform(GrazingGeometry):
         ----------
         files : str or list(str) or None
             File(s) used to compute the dark current image.
-        method : str 
+        method : str
             Method used to compute the dark. Can be "mean" or "median".
         """
-        if type(files) in types.StringTypes:
+#        if type(files) in types.StringTypes:
+        if isinstance(obj, str): #CJT
+
             files = [i.strip() for i in files.split(",")]
         elif not files:
             files = []
@@ -1947,10 +1949,11 @@ class Transform(GrazingGeometry):
         ----------
         files : str or list(str) or None
             File(s) used to compute the flat field image.
-        method : str 
+        method : str
             Method used to compute the flat. Can be "mean" or "median".
         """
-        if type(files) in types.StringTypes:
+#        if type(files) in types.StringTypes:
+        if isinstance(obj, str): #CJT
             files = [i.strip() for i in files.split(",")]
         elif not files:
             files = []

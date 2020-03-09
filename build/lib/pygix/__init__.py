@@ -29,6 +29,7 @@ import os
 project = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 
 try:
+    print()
     from ._version import __date__ as date  # noqa
     from ._version import version, version_info, hexversion, strictversion  # noqa
 except ImportError:
@@ -36,11 +37,11 @@ except ImportError:
 
 logging.basicConfig()
 
-if sys.version_info < (2, 6):
+if sys.version_info < (3, 6):
     logger = logging.getLogger("pygix.__init__")
-    logger.error("pygix requires a python version >= 2.6")
+    logger.error("pygix requires a python version >= 3.6")
     raise RuntimeError(
-        "pygix requires a python version >= 2.6, now we are running: %s" %
+        "pygix requires a python version >= 3.6, now we are running: %s" %
         sys.version
         )
 else:

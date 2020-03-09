@@ -27,7 +27,7 @@ __docformat__ = "restructuredtext"
 import logging
 logger = logging.getLogger("pygix.grazing_units")
 from numpy import pi
-import types
+#import types
 hc = 12.398419292004204
 
 
@@ -149,7 +149,8 @@ GI_UNITS = (TTH_DEG, TTH_RAD, Q_NM, Q_A)
 
 def to_unit(obj):
     giUnit = None
-    if type(obj) in types.StringTypes:
+#    if type(obj) in types.StringTypes: updated 2to3
+    if isinstance(obj, str): #CJT
         for one_unit in GI_UNITS:
             if one_unit.REPR == obj:
                 giUnit = one_unit
@@ -164,7 +165,8 @@ def to_unit(obj):
 
 def ip_unit(obj):
     ipl_giUnit = None
-    if type(obj) in types.StringTypes:
+#    if type(obj) in types.StringTypes: updated 2to3
+    if isinstance(obj, str): #CJT
         for one_unit in GI_UNITS:
             if one_unit.IPL_UNIT == obj:
                 ipl_giUnit = one_unit
@@ -179,7 +181,8 @@ def ip_unit(obj):
 
 def op_unit(obj):
     opl_giUnit = None
-    if type(obj) in types.StringTypes:
+#    if type(obj) in types.StringTypes: updated 2to3
+    if isinstance(obj, str): #CJT
         for one_unit in GI_UNITS:
             if one_unit.OPL_UNIT == obj:
                 opl_giUnit = one_unit
@@ -222,7 +225,8 @@ def op_unit(obj):
 def absolute_unit(obj):
     abs_giUnit = None
     print(type(obj))
-    if type(obj) in types.StringTypes:
+#    if type(obj) in types.StringTypes: updated from 2to3
+    if isinstance(obj, str): #CJT
         for one_unit in ABS_UNITS:
             if one_unit.REPR == obj:
                 abs_giUnit = one_unit

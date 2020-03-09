@@ -50,14 +50,14 @@ class GrazingGeometry(Geometry):
     """
     This class defines the projection of pixels in detector coordinates
     into angular or reciprocal space under in the grazing-incidence
-    geometry. Additionally the pixels in detector coordinates are 
-    further projected into polar coordinates for azimuthal integration 
-    as in pyFAI. 
+    geometry. Additionally the pixels in detector coordinates are
+    further projected into polar coordinates for azimuthal integration
+    as in pyFAI.
 
     The class is inherets from pyFAI.geometry.Geometry (Geometry). The
-    basic assumptions on detector configuration are therefore as 
+    basic assumptions on detector configuration are therefore as
     defined in Geometry. The correction for detector tilt is handled in
-    Geometry, refer to the pyFAI documentation for more details. 
+    Geometry, refer to the pyFAI documentation for more details.
 
     Briefly:
     - dim1 is the Y dimension of the image
@@ -398,11 +398,11 @@ class GrazingGeometry(Geometry):
     def giq_corner_array(self, shape):
         """
         Note: in all other coord functions, values are returned as
-        (opl, ipl). Due to requirements for splitpix method here are 
-        returned (ipl, opl). 
+        (opl, ipl). Due to requirements for splitpix method here are
+        returned (ipl, opl).
 
         return : (n, m, 4, 2) array
-            where n, m is the image dimensions, 
+            where n, m is the image dimensions,
             4 is the four corners and 2 is the
             qxy[0] and qz[1]
         """
@@ -435,11 +435,11 @@ class GrazingGeometry(Geometry):
     def gia_corner_array(self, shape):
         """
         Note: in all other coord functions, values are returned as
-        (opl, ipl). Due to requirements for splitpix method here are 
-        returned (ipl, opl). 
+        (opl, ipl). Due to requirements for splitpix method here are
+        returned (ipl, opl).
 
         return : (n, m, 4, 2) array
-            where n, m is the image dimensions, 
+            where n, m is the image dimensions,
             4 is the four corners and 2 is the
             qxy[0] and qz[1]
         """
@@ -473,9 +473,9 @@ class GrazingGeometry(Geometry):
         """
         Generate 2 3D arrays of the given shape with (i,j) with the max
         distance between the center and any corner for qz and qxy.
-        
+
         @param shape: The shape of the detector array: 2-tuple of integer
-        @return: 2 2D-arrays containing the max delta between a pixel 
+        @return: 2 2D-arrays containing the max delta between a pixel
         center and any corner in (qz, qxy).
         """
         if self._giq_del is None:
@@ -523,9 +523,9 @@ class GrazingGeometry(Geometry):
         """
         Generate 2 3D arrays of the given shape with (i,j) with the max
         distance between the center and any corner for alpha_f and 2theta_f.
-        
+
         @param shape: The shape of the detector array: 2-tuple of integer
-        @return: 2 2D-arrays containing the max delta between a pixel 
+        @return: 2 2D-arrays containing the max delta between a pixel
         center and any corner in (alpha_f, 2theta_f).
         """
         if self._gia_del is None:
@@ -617,11 +617,11 @@ class GrazingGeometry(Geometry):
     def absq_corner_array(self, shape):
         """
         N.B. in all other coord functions, values are returned as
-        (opl, ipl). Due to requirements for splitpix method here are 
-        returned (ipl, opl). 
+        (opl, ipl). Due to requirements for splitpix method here are
+        returned (ipl, opl).
 
         return : (n,m, 4, 2) array
-            where n, m is the image dimensions, 
+            where n, m is the image dimensions,
             4 is the four corners and 2 is the
             tthf[0] and alpf[1]
         """
@@ -638,11 +638,11 @@ class GrazingGeometry(Geometry):
     def absa_corner_array(self, shape):
         """
         N.B. in all other coord functions, values are returned as
-        (opl, ipl). Due to requirements for splitpix method here are 
-        returned (ipl, opl). 
+        (opl, ipl). Due to requirements for splitpix method here are
+        returned (ipl, opl).
 
         return : (n,m, 4, 2) array
-            where n, m is the image dimensions, 
+            where n, m is the image dimensions,
             4 is the four corners and 2 is the
             tthf[0] and alpf[1]
         """
@@ -753,7 +753,7 @@ class GrazingGeometry(Geometry):
         interpolation over the unaccessible regions of reciprocal space. This
         function makes a mask for these regions.
 
-        This is determined by setting qy = 0 (i.e. when 2theta_f = 0) and 
+        This is determined by setting qy = 0 (i.e. when 2theta_f = 0) and
         calculating qx as a function of qz:
 
         qx = k(cos(alpha_f)cos(2theta_f) - cos(alpha_i))
@@ -767,30 +767,30 @@ class GrazingGeometry(Geometry):
         cos_ai = cos(ai)
         sin_ai = sin(ai)
 
-        # print 'inshape, npt, bins_x.shape, bins_y.shape'
-        # print inshape, npt, bins_x.shape, bins_y.shape
+        # print('inshape, npt, bins_x.shape, bins_y.shape')
+        # print(inshape, npt, bins_x.shape, bins_y.shape)
 
         with self._sem:
             qx, qy, qz = np.fromfunction(self.calc_q_xyz, inshape,
                                          dtype=np.float32)
 
-        # print 'qx.shape, qy.shape, qz.shape'
-        # print qx.shape, qy.shape, qz.shape
+        # print('qx.shape, qy.shape, qz.shape')
+        # print(qx.shape, qy.shape, qz.shape)
 
         pp = '''
         fig = plt.figure(figsize=(15,4))
         fig.add_subplot(131)
         plt.imshow(qx*100, cmap='afmhot', origin='lower')
         plt.colorbar()
-        
+
         fig.add_subplot(132)
         plt.imshow(qy*100, cmap='afmhot', origin='lower')
         plt.colorbar()
-        
+
         fig.add_subplot(133)
         plt.imshow(qz*100, cmap='afmhot', origin='lower')
         plt.colorbar()
-        
+
         plt.show()
         #'''
 
@@ -808,8 +808,8 @@ class GrazingGeometry(Geometry):
         y = np.linspace(0, inshape[abs(1 - axis)] - 1,
                         inshape[abs(1 - axis)])  # idx along qz
 
-        # print 'zeroidx.shape, y.shape'
-        # print zeroidx.shape, y.shape
+        # print('zeroidx.shape, y.shape')
+        # print(zeroidx.shape, y.shape)
 
         if self.sample_orientation in [1, 3]:
             qxqy0 = abs(qx[y.astype(np.int), zeroidx.astype(np.int)])
@@ -819,11 +819,11 @@ class GrazingGeometry(Geometry):
         # plt.plot(qxqy0)
         # plt.plot(abs(qx[:,786]))
         # plt.plot(abs(qx[:,813]))
-        # print zeroidx
+        # print(zeroidx)
         # plt.plot(y[350:550], qxqy0[350:550], 'ko')
         # for i in range(-20, 20):
         #    ddd = abs(qx[350:550,800+i])
-        #    print 800+i, ddd.min()
+        #    print(800+i, ddd.min())
         #    plt.plot(ddd)
         # plt.xlim(0,500)
         # plt.show()
@@ -833,7 +833,7 @@ class GrazingGeometry(Geometry):
                 qxy = np.outer(np.ones(bins_y.shape[0]), bins_x).ravel()
                 qlim = np.outer(qxqy0, np.ones(bins_x.shape[0])).ravel()
 
-            # print qxy.shape, qlim.shape
+            # print(qxy.shape, qlim.shape)
 
             else:
                 qxy = np.outer(bins_x, np.ones(bins_y.shape[0])).ravel()
@@ -875,28 +875,28 @@ class GrazingGeometry(Geometry):
             # entire code for this else clause
             this_works = '''
             qzl = qz[zeroidx.astype(np.int), y.astype(np.int)]
-            
+
             chilim_full = (np.arctan2(qxqy0, qzl))#[::-1]
             qabs = np.sqrt(qxqy0**2 + qzl**2)
-            
+
             zeropoint = np.argmin(qabs)
             chilim_lower = chilim_full[zeropoint:]
-            
+
             npt_out = (round(npt[0]*(np.max(qabs)/np.max(bins_x))))#+50
             npt_chilim = chilim_lower.shape[0]
             y1 = np.linspace(0, npt_chilim-1, npt_chilim)
             y2 = np.linspace(0, npt_chilim-1, npt_out)#npt[0])
-            
-            
+
+
             chilim = np.interp(y2, y1, chilim_lower)
             chilim = np.append(chilim, np.zeros(npt[0]-npt_out))
             chi = np.outer(bins_y, np.ones(bins_x.shape[0])).ravel()
             chi_lim = np.outer(np.ones(bins_y.shape[0]), chilim).ravel()
-            
+
             # for full mapping would use:
             #     mask[chi_lower < abs(chi) < chi_upper] = 0
             mask[abs(chi-pi) <= chi_lim] = 0
-            
+
             mask = np.reshape(mask, (npt[1],npt[0]))
             #'''
             # ------------------------------
