@@ -35,7 +35,7 @@ import os
 import logging
 
 logger = logging.getLogger("pygix.transform")
-import types
+#import types
 import threading
 import gc
 import numpy as np
@@ -748,6 +748,7 @@ class Transform(GrazingGeometry):
         if (method != self._last_method) and (self._last_method is not None):
             self._transformedmask = None
 
+        print("Method: ", method)
         unit = grazing_units.to_unit(unit)
         pos_scale = unit.scale
         if mask is None:

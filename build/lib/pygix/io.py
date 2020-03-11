@@ -74,9 +74,9 @@ class Writer(object):
                     hdr_dict['Flat field'] = pg.flatfiles
                 else:
                     hdr_dict['Flat field'] = 'Unknown flat file'
-            if (polarization_factor is None) and (pg._polarization is not None):
-                polarization_factor = pg._polarization_factor
-            hdr_dict['Polarization factor'] = polarization_factor
+            #if (polarization_factor is None) and (pg._polarization is not None): CJT
+            #    polarization_factor = pg._polarization_factor CJT
+            #hdr_dict['Polarization factor'] = polarization_factor CJT
             hdr_dict['Normalization factor'] = normalization_factor
             self._hdr_dict = hdr_dict
         return self._hdr_dict
