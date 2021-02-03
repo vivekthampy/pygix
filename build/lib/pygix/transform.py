@@ -105,25 +105,25 @@ from pyFAI.opencl import ocl
 
 if ocl:
     try:
-        from pyFAI import ocl_azim  # IGNORE:F0401
+        from pyFAI.load_integrators import ocl_azim  # IGNORE:F0401
     except ImportError as error:  # IGNORE:W0703
         logger.warning("Unable to import pyFAI.ocl_azim"
                        ": %s" % error)
         ocl_azim = None
     try:
-        from pyFAI import ocl_azim_csr  # IGNORE:F0401
+        from pyFAI.load_integrators import ocl_azim_csr  # IGNORE:F0401
     except ImportError as error:
         logger.error("Unable to import pyFAI.ocl_azim_csr"
                      ": %s" % error)
         ocl_azim_csr = None
     try:
-        from pyFAI import ocl_azim_lut  # IGNORE:F0401
+        from pyFAI.load_integrators import ocl_azim_lut  # IGNORE:F0401
     except ImportError as error:  # IGNORE:W0703
         logger.error("Unable to import pyFAI.ocl_azim_lut for"
                      ": %s" % error)
         ocl_azim_lut = None
     try:
-        from pyFAI import ocl_sort
+        from pyFAI.load_integrators import ocl_sort
     except ImportError as error:  # IGNORE:W0703
         logger.error("Unable to import pyFAI.ocl_sort for"
                      ": %s" % error)
